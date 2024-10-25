@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import style from "./page.module.sass"
 import styles from "@/app/page.module.sass"
 
