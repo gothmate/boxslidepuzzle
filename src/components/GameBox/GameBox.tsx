@@ -133,7 +133,7 @@ export default function GameBox() {
       <p>Movimentos: {movimento}</p>
       <p>Seu melhor resultado: {melhorResultado !== null ? melhorResultado : "N/A"}</p>
       <button onClick={() => animatedShuffle(100)} className={styles.btn}>
-        Replay
+        Embaralhar
       </button>
     </>
   )
