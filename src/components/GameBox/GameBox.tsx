@@ -14,9 +14,6 @@ export default function GameBox() {
   const [grid, setGrid] = useState<(number | null)[]>(initialTiles)
   const [win, setWin] = useState('')
 
-  useEffect(() => {
-    animatedShuffle(150)
-  }, [])
 
   function animatedShuffle(moves = 100) {
     setWin('')
