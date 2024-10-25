@@ -13,9 +13,11 @@ export default function GameBox() {
 
   const [grid, setGrid] = useState<(number | null)[]>(initialTiles)
   const [win, setWin] = useState('')
+  const [winFlag, setWinFlag] = useState('')
 
 
   function animatedShuffle(moves = 100) {
+    setWinFlag('')
     setWin('')
     let count = 0
     let lastMove: number | null = null
@@ -81,7 +83,10 @@ export default function GameBox() {
     const isSolved = currentGrid
       .slice(0, -1)
       .every((tile, i) => tile === i + 1)
-    if (isSolved) setWin("Parabéns! Você completou o quebra-cabeça!")
+    if (isSolved) {
+        setWin("Parabéns! Você completou o quebra-cabeça!")
+        setWinFlag(style.win)
+    }
   }
 
   return (
@@ -99,7 +104,9 @@ export default function GameBox() {
                 </div>
                 ))}
             </div>
-            <p>{win}</p>
+            <div className={winFlag}>
+                <h3>{win}</h3>
+            </div>
         </div>
         <button onClick={() => animatedShuffle(100)} className={styles.btn}>Replay</button>
     </>
