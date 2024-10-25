@@ -1,0 +1,99 @@
+@use 'variables'
+
+.page 
+  display: grid
+  grid-template-rows: 20px 1fr 20px
+  align-items: center
+  justify-items: center
+  min-height: 100svh
+  padding: 80px
+  gap: 64px
+  font-family: var(--font-geist-sans)
+
+.puzzle 
+  display: grid 
+  gap: 0.5rem 
+  grid-template-columns: repeat(3, 100px)
+  padding: 1rem
+  border-radius: 8px
+  background: #353535
+  box-shadow: 3px 3px 15px #252525
+  & div 
+    width: 100px
+    height: 100px
+    border-radius: 5px
+    background: #c8d8d7
+    font-size: 2em
+    color: #585858
+    display: flex
+    align-items: center
+    justify-content: center
+    cursor: pointer
+    &:hover 
+      filter: brightness(0.9)
+    
+    &:active 
+      box-shadow: inset -2px -2px 8px #000
+
+.no-select
+  user-select: none
+
+.empty 
+  background: transparent !important
+  cursor: default !important
+
+.btn
+  padding-inline: 1rem
+  padding-block: 0.5rem
+  border: none
+  border-radius: 5px
+  background: #21718a
+  color: #fff
+  &:hover
+    background: variables.$button-secondary-hover
+    color: variables.$button-secondary-hover-color
+  &:active
+    box-shadow: inset 1px 1px 5px #000
+
+@media (prefers-color-scheme: dark) 
+  .page 
+    $gray-rgb: 255, 255, 255
+    $gray-alpha-200: rgba(0,0,0, 0.145)
+    $gray-alpha-100: rgba(0,0,0, 0.06)
+
+    $button-primary-hover: #ccc
+    $button-secondary-hover: #1a1a1a
+  
+.main 
+  display: flex
+  flex-direction: column
+  gap: 32px
+  grid-row-start: 2
+
+
+@media (hover: hover) and (pointer: fine) 
+  a.primary:hover 
+    background: variables.$button-primary-hover
+    border-color: transparent
+  
+
+  a.secondary:hover 
+    background: variables.$button-secondary-hover
+    border-color: transparent
+  
+
+  .footer a:hover 
+    text-decoration: underline
+    text-underline-offset: 4px
+  
+
+
+@media (max-width: 600px) 
+  .page 
+    padding: 32px
+    padding-bottom: 80px
+  
+
+  .main 
+    align-items: center
+  
