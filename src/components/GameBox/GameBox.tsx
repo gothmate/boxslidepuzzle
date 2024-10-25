@@ -25,7 +25,7 @@ export default function GameBox() {
     let secondLastMove: number | null = null
 
     const shuffleInterval = setInterval(() => {
-      let gridMount = (prevGrid: any) => {
+      const gridMount = (prevGrid: any) => {
         const emptyIndex = prevGrid.indexOf(null)
         const validMoves = getValidMoves(emptyIndex)
 
