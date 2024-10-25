@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <Header />
-      <main>
+      <main className={styles.main}>
         <GameBox />
       </main>
       <Footer />
