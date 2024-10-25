@@ -1,11 +1,11 @@
 @use 'variables'
 
 .page
-  display: grid
-  grid-template-rows: 40px 1fr 40px
+  display: flex
+  flex-direction: column
   align-items: center
-  justify-items: center
-  min-height: 100svh
+  justify-content: center
+  min-height: 100vh
   gap: 1rem
   font-family: var(--font-geist-sans)
 
@@ -67,7 +67,6 @@
   display: flex
   flex-direction: column
   gap: 32px
-  grid-row-start: 2
 
 
 @media (hover: hover) and (pointer: fine) 

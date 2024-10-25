@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import style from "./page.module.sass"
 import styles from "@/app/page.module.sass"
 
@@ -12,13 +12,22 @@ export default function GameBox() {
   initialTiles.push(null)
 
   const [grid, setGrid] = useState<(number | null)[]>(initialTiles)
-  const [win, setWin] = useState('')
-  const [winFlag, setWinFlag] = useState('')
+  const [win, setWin] = useState("")
+  const [movimento, setMovimento] = useState(0)
+  const [winFlag, setWinFlag] = useState("")
+  const [melhorResultado, setMelhorResultado] = useState<number | null>(null)
 
+  useEffect(() => {
+    const recordeSalvo = localStorage.getItem("melhorResultado")
+    if (recordeSalvo) {
+      setMelhorResultado(parseInt(recordeSalvo, 10))
+    }
+  }, [])
 
   function animatedShuffle(moves = 100) {
-    setWinFlag('')
-    setWin('')
+    setMovimento(0)
+    setWinFlag("")
+    setWin("")
     let count = 0
     let lastMove: number | null = null
     let secondLastMove: number | null = null
@@ -38,8 +47,11 @@ export default function GameBox() {
           secondLastMove = lastMove
           lastMove = randomMove
 
-          const newGrid: (number | null)[] = [...prevGrid];
-          [newGrid[emptyIndex], newGrid[randomMove]] = [newGrid[randomMove], newGrid[emptyIndex]]
+          const newGrid: (number | null)[] = [...prevGrid]
+          ;[newGrid[emptyIndex], newGrid[randomMove]] = [
+            newGrid[randomMove],
+            newGrid[emptyIndex],
+          ]
           count++
 
           if (count >= moves) clearInterval(shuffleInterval)
@@ -58,9 +70,13 @@ export default function GameBox() {
 
     if (validMoves.includes(index)) {
       setGrid((prevGrid) => {
-        const newGrid = [...prevGrid];
-        [newGrid[emptyIndex], newGrid[index]] = [newGrid[index], newGrid[emptyIndex]]
+        const newGrid = [...prevGrid]
+        ;[newGrid[emptyIndex], newGrid[index]] = [
+          newGrid[index],
+          newGrid[emptyIndex],
+        ]
         checkWin(newGrid)
+        setMovimento(movimento + 1)
         return newGrid
       })
     }
@@ -80,35 +96,45 @@ export default function GameBox() {
   }
 
   function checkWin(currentGrid: (number | null)[]) {
-    const isSolved = currentGrid
-      .slice(0, -1)
-      .every((tile, i) => tile === i + 1)
+    const isSolved = currentGrid.slice(0, -1).every((tile, i) => tile === i + 1)
     if (isSolved) {
-        setWin("Parabéns! Você completou o quebra-cabeça!")
-        setWinFlag(style.win)
+      setWin("Parabéns! Você completou o quebra-cabeça!")
+      setWinFlag(style.win)
+      atualizarMelhorResultado(movimento)
+    }
+  }
+
+  function atualizarMelhorResultado(movimentosAtuais: number) {
+    if (melhorResultado === null || movimentosAtuais < melhorResultado) {
+      setMelhorResultado(movimentosAtuais)
+      localStorage.setItem("melhorResultado", movimentosAtuais.toString())
     }
   }
 
   return (
     <>
-        <div className={style.container}>
-            <div className={styles.puzzle}>
-                {grid.map((tile, i) => (
-                <div
-                    key={i}
-                    className={`${styles.tile} ${tile === null ? styles.empty : ""}`}
-                    onClick={() => moveTile(i)}
-                    style={{ userSelect: "none" }}
-                >
-                    {tile || ""}
-                </div>
-                ))}
+      <div className={style.container}>
+        <div className={styles.puzzle}>
+          {grid.map((tile, i) => (
+            <div
+              key={i}
+              className={`${styles.tile} ${tile === null ? styles.empty : ""}`}
+              onClick={() => moveTile(i)}
+              style={{ userSelect: "none" }}
+            >
+              {tile || ""}
             </div>
-            <div className={winFlag}>
-                <h3>{win}</h3>
-            </div>
+          ))}
         </div>
-        <button onClick={() => animatedShuffle(100)} className={styles.btn}>Replay</button>
+        <div className={winFlag}>
+          <h3>{win}</h3>
+        </div>
+      </div>
+      <p>Movimentos: {movimento}</p>
+      <p>Seu melhor resultado: {melhorResultado !== null ? melhorResultado : "N/A"}</p>
+      <button onClick={() => animatedShuffle(100)} className={styles.btn}>
+        Replay
+      </button>
     </>
   )
 }
