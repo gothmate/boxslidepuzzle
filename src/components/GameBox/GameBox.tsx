@@ -98,9 +98,9 @@ export default function GameBox() {
   function checkWin(currentGrid: (number | null)[]) {
     const isSolved = currentGrid.slice(0, -1).every((tile, i) => tile === i + 1)
     if (isSolved) {
-      setWin("Parabéns! Você completou o quebra-cabeça!")
+      setWin(`Parabéns! Você completou o quebra-cabeça com ${movimento + 1} movimentos.`)
       setWinFlag(style.win)
-      atualizarMelhorResultado(movimento)
+      atualizarMelhorResultado(movimento + 1)
     }
   }
 
