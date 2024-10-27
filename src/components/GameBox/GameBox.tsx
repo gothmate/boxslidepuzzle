@@ -12,9 +12,9 @@ export default function GameBox() {
   initialTiles.push(null)
 
   const [grid, setGrid] = useState<(number | null)[]>(initialTiles)
-  const [win, setWin] = useState("")
+  const [win, setWin] = useState('Embaralhe para começar!');
   const [movimento, setMovimento] = useState(0)
-  const [winFlag, setWinFlag] = useState("")
+  const [winFlag, setWinFlag] = useState(style.win);
   const [melhorResultado, setMelhorResultado] = useState<number | null>(null)
 
   useEffect(() => {
