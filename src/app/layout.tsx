@@ -26,6 +26,9 @@ export default function RootLayout({
   return (
 		<html lang='pt-br'>
 			<head>
+				<meta charSet='UTF-8' />
+				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+				<title>Box Slide Puzzle</title>
 				<script
 					async
 					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5737711449293910'
