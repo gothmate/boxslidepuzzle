@@ -24,10 +24,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
-    </html>
-  );
+		<html lang='pt-br'>
+			<head>
+				<script
+					async
+					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5737711449293910'
+					crossOrigin='anonymous'
+				></script>
+			</head>
+			<body className={`${geistSans.variable} ${geistMono.variable}`}>
+				{children}
+			</body>
+		</html>
+	);
 }

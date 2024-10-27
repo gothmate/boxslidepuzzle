@@ -47,8 +47,8 @@ export default function GameBox() {
           secondLastMove = lastMove
           lastMove = randomMove
 
-          const newGrid: (number | null)[] = [...prevGrid]
-          ;[newGrid[emptyIndex], newGrid[randomMove]] = [
+          const newGrid: (number | null)[] = [...prevGrid];
+          [newGrid[emptyIndex], newGrid[randomMove]] = [
             newGrid[randomMove],
             newGrid[emptyIndex],
           ]
