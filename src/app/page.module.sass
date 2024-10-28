@@ -53,6 +53,10 @@
     color: variables.$button-secondary-hover-color
   &:active
     box-shadow: inset 1px 1px 5px #000
+  &:disabled
+    filter: brightness(0.6)
+    color: #fff
+    background: variables.$gray-alpha-200
 
 @media (prefers-color-scheme: dark) 
   .page 

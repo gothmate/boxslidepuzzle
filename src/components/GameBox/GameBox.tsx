@@ -16,6 +16,7 @@ export default function GameBox() {
   const [movimento, setMovimento] = useState(0)
   const [winFlag, setWinFlag] = useState(style.win);
   const [melhorResultado, setMelhorResultado] = useState<number | null>(null)
+  const [disableBtn, setDisableBtn] = useState(false)
 
   useEffect(() => {
     const recordeSalvo = localStorage.getItem("melhorResultado")
@@ -25,6 +26,7 @@ export default function GameBox() {
   }, [])
 
   function animatedShuffle(moves = 100) {
+    setDisableBtn(true)
     setMovimento(0)
     setWinFlag("")
     setWin("")
@@ -98,6 +100,7 @@ export default function GameBox() {
   function checkWin(currentGrid: (number | null)[]) {
     const isSolved = currentGrid.slice(0, -1).every((tile, i) => tile === i + 1)
     if (isSolved) {
+      setDisableBtn(false)
       setWin(`Parabéns! Você completou o quebra-cabeça com ${movimento + 1} movimentos.`)
       setWinFlag(style.win)
       atualizarMelhorResultado(movimento + 1)
@@ -132,7 +135,7 @@ export default function GameBox() {
       </div>
       <p>Movimentos: {movimento}</p>
       <p>Seu melhor resultado: {melhorResultado !== null ? melhorResultado : "N/A"}</p>
-      <button onClick={() => animatedShuffle(100)} className={styles.btn}>
+      <button disabled={disableBtn} onClick={() => animatedShuffle(100)} className={styles.btn}>
         Embaralhar
       </button>
     </>
