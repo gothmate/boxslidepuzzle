@@ -58,6 +58,21 @@
     color: #fff
     background: variables.$gray-alpha-200
 
+  
+
+.container
+  width: 70%
+  gap: 1rem
+  & .bloco
+    padding-block: 1rem
+  & .link
+    background: #21718a
+    color: #fff
+    margin-block: 1rem
+    padding-block: 0.5rem
+    padding-inline: 1rem
+    border-radius: 5px
+
 @media (prefers-color-scheme: dark) 
   .page 
     $gray-rgb: 255, 255, 255
@@ -70,20 +85,12 @@
 .main 
   display: flex
   flex-direction: column
+  justify-content: center
+  align-items: center
   gap: 1rem
 
 
 @media (hover: hover) and (pointer: fine) 
-  a.primary:hover 
-    background: variables.$button-primary-hover
-    border-color: transparent
-  
-
-  a.secondary:hover 
-    background: variables.$button-secondary-hover
-    border-color: transparent
-  
-
   .footer a:hover 
     text-decoration: underline
     text-underline-offset: 4px
@@ -91,6 +98,8 @@
 
 
 @media (max-width: 600px) 
+  .container
+    width: 90%
   .page 
     padding: 32px
     padding-bottom: 80px
