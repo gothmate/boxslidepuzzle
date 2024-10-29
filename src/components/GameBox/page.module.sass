@@ -2,24 +2,19 @@
 
 .container
     position: relative
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
+    @include variables.flex(center, center)
     gap: 0.5rem
 
     & .win
-        display: flex
+        @include variables.flex(center, center)
         text-align: center
-        align-items: center
-        justify-content: center
         z-index: 3
         width: 100%
         height: 100%
-        background: #353535bd
+        background: variables.$gray-alpha-200
         padding: 1rem
         position: absolute
         top: 0
         left: 0
-        color: #fff
+        color: #f0f0f0
         text-shadow: 1px 1px 3px #000

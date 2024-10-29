@@ -1,10 +1,14 @@
 @use 'variables'
 
-.page
+.main 
   display: flex
   flex-direction: column
-  align-items: center
   justify-content: center
+  align-items: center
+  gap: 1rem
+
+.page
+  @include variables.flex(center, center)
   min-height: 100vh
   gap: 0.5rem
   font-family: var(--font-geist-sans)
@@ -18,15 +22,13 @@
   background: #353535
   box-shadow: 3px 3px 15px #252525
   & div 
+    @include variables.flex(center, center)
     width: 70px
     height: 70px
     border-radius: 5px
     background: #c8d8d7
     font-size: 2em
     color: #585858
-    display: flex
-    align-items: center
-    justify-content: center
     cursor: pointer
     &:hover 
       filter: brightness(0.9)
@@ -81,14 +83,6 @@
 
     $button-primary-hover: #ccc
     $button-secondary-hover: #1a1a1a
-  
-.main 
-  display: flex
-  flex-direction: column
-  justify-content: center
-  align-items: center
-  gap: 1rem
-
 
 @media (hover: hover) and (pointer: fine) 
   .footer a:hover 
