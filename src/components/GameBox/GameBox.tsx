@@ -12,20 +12,38 @@ export default function GameBox() {
   initialTiles.push(null)
 
   const [grid, setGrid] = useState<(number | null)[]>(initialTiles)
-  const [win, setWin] = useState('Embaralhe para começar!');
+  const [win, setWin] = useState("Embaralhe para começar!")
   const [movimento, setMovimento] = useState(0)
-  const [winFlag, setWinFlag] = useState(style.win);
+  const [winFlag, setWinFlag] = useState(style.win)
   const [melhorResultado, setMelhorResultado] = useState<number | null>(null)
+  const [melhorTempo, setMelhorTempo] = useState<number | null>(null)
   const [disableBtn, setDisableBtn] = useState(false)
+  const [segundos, setSegundos] = useState(0)
+  const [ativo, setAtivo] = useState(false)
 
-  useEffect(() => {
-    const recordeSalvo = localStorage.getItem("melhorResultado")
-    if (recordeSalvo) {
-      setMelhorResultado(parseInt(recordeSalvo, 10))
-    }
-  }, [])
+  function iniciarCronometro() {
+    setAtivo(true)
+  }
+
+  function pausarCronometro() {
+    setAtivo(false)
+  }
+
+  function resetarCronometro() {
+    setAtivo(false)
+    setSegundos(0)
+  }
+
+  function formatarTempo(segundos: number) {
+    const minutos = Math.floor(segundos / 60)
+    const segundosRestantes = segundos % 60
+    return `${String(minutos).padStart(2, "0")}:${String(
+      segundosRestantes
+    ).padStart(2, "0")}`
+  }
 
   function animatedShuffle(moves = 100) {
+    resetarCronometro()
     setDisableBtn(true)
     setMovimento(0)
     setWinFlag("")
@@ -63,7 +81,8 @@ export default function GameBox() {
         return prevGrid
       }
       setGrid(gridMount)
-    }, 100)
+    }, 10)
+    iniciarCronometro()
   }
 
   function moveTile(index: number) {
@@ -72,8 +91,8 @@ export default function GameBox() {
 
     if (validMoves.includes(index)) {
       setGrid((prevGrid) => {
-        const newGrid = [...prevGrid]
-        ;[newGrid[emptyIndex], newGrid[index]] = [
+        const newGrid = [...prevGrid];
+        [newGrid[emptyIndex], newGrid[index]] = [
           newGrid[index],
           newGrid[emptyIndex],
         ]
@@ -100,23 +119,57 @@ export default function GameBox() {
   function checkWin(currentGrid: (number | null)[]) {
     const isSolved = currentGrid.slice(0, -1).every((tile, i) => tile === i + 1)
     if (isSolved) {
+      pausarCronometro()
       setDisableBtn(false)
-      setWin(`Parabéns! Você completou o quebra-cabeça com ${movimento + 1} movimentos.`)
+      setWin(
+        `Parabéns! Você completou o quebra-cabeça com ${
+          movimento + 1
+        } movimentos em ${formatarTempo(segundos)}`
+      )
       setWinFlag(style.win)
-      atualizarMelhorResultado(movimento + 1)
+      atualizarMelhorResultado(movimento + 1, segundos)
     }
   }
 
-  function atualizarMelhorResultado(movimentosAtuais: number) {
+  function atualizarMelhorResultado(movimentosAtuais: number, tempoAtual: number) {
     if (melhorResultado === null || movimentosAtuais < melhorResultado) {
       setMelhorResultado(movimentosAtuais)
       localStorage.setItem("melhorResultado", movimentosAtuais.toString())
     }
+    if (melhorTempo === null || tempoAtual < melhorTempo) {
+      setMelhorTempo(tempoAtual)
+      localStorage.setItem("melhorTempo", tempoAtual.toString())
+    }
   }
+
+  useEffect(() => {
+    let intervalo: NodeJS.Timeout | undefined
+    if (ativo) {
+      intervalo = setInterval(() => {
+        setSegundos((segundos) => segundos + 1)
+      }, 1000)
+    } else if (!ativo && segundos !== 0) {
+      clearInterval(intervalo)
+    }
+    return () => clearInterval(intervalo)
+  }, [ativo, segundos])
+
+  useEffect(() => {
+    const recordeSalvo = localStorage.getItem("melhorResultado")
+    const melhorTempoSalvo = localStorage.getItem("melhorTempo")
+
+    if (recordeSalvo) {
+      setMelhorResultado(parseInt(recordeSalvo, 10))
+    }
+    if (melhorTempoSalvo) {
+      setMelhorTempo(parseInt(melhorTempoSalvo, 10))
+    }
+  }, [])
 
   return (
     <>
       <div className={style.container}>
+        <p>{formatarTempo(segundos)}</p>
         <div className={styles.puzzle}>
           {grid.map((tile, i) => (
             <div
@@ -133,9 +186,19 @@ export default function GameBox() {
           <h3>{win}</h3>
         </div>
       </div>
-      <p>Movimentos: {movimento}</p>
-      <p>Seu melhor resultado: {melhorResultado !== null ? melhorResultado : "N/A"}</p>
-      <button disabled={disableBtn} onClick={() => animatedShuffle(100)} className={styles.btn}>
+      <p className={style.movimentos}>Movimentos: {movimento}</p>
+      <p>
+        Seu melhor resultado: {melhorResultado !== null ? melhorResultado : "N/A"}
+      </p>
+      <p>
+        Melhor tempo:{" "}
+        {melhorTempo !== null ? formatarTempo(melhorTempo) : "N/A"}
+      </p>
+      <button
+        disabled={disableBtn}
+        onClick={() => animatedShuffle(100)}
+        className={styles.btn}
+      >
         Embaralhar
       </button>
     </>
